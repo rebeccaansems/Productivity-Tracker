@@ -9,7 +9,7 @@
         android:text="How are you feeling?"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="278.0dp"
         android:id="@+id/textFeeling" />
     <Button
         android:text="Awesome"
@@ -39,8 +39,7 @@
     <GridLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/gridLayout1"
-        android:layout_marginTop="236dp">
+        android:id="@+id/gridLayout1">
         <Button
             android:text="Graph"
             android:id="@+id/buttonGraph" />
