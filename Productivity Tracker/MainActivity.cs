@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
@@ -6,7 +8,6 @@ using Android.Views;
 using Android.Widget;
 using System.Diagnostics;
 using Android.OS;
-using System.IO;
 using SQLite;
 
 namespace Productivity_Tracker
@@ -186,9 +187,9 @@ namespace Productivity_Tracker
             FakeData();
 
             var database = db.Table<ProductiveData>();
-            for (int i = 0; i < 24; i++)
+            for (int i = 0; i < productivityHour.Length; i++)
             {
-                productivityHour[i] = new Tuple<int, int>(0, 0);
+                productivityHour[i] = new Tuple<int, int>(0, 0);//(number of data points, productivity level)
             }
 
             foreach (var dataPoint in database)
@@ -197,18 +198,20 @@ namespace Productivity_Tracker
                 productivityLevelTotalHour = productivityHour[dataPoint.DateHour].Item2 + dataPoint.ProdutivityLevel;
                 productivityHour[dataPoint.DateHour] = new Tuple<int, int>(productiveDataPoints, productivityLevelTotalHour);
             }
+            List<Tuple<int, float>> bestProductivityTimes = CalculateBestTimes(CalculateAverage(productivityHour));
 
-            string stringDBTest = "";
-            for (int i = 0; i < 24; i++)
+            string summaryText = "The times your are most productive are:\n";
+            for(int i=0; i<bestProductivityTimes.Count; i++)
             {
-                float average = 0;
-                if (productivityHour[i].Item1 != 0)
+                if (bestProductivityTimes[i].Item1 > 12)
                 {
-                    average = (float)productivityHour[i].Item2 / (float)productivityHour[i].Item1;
+                    summaryText += bestProductivityTimes[i].Item1 - 12 + "pm \n";
+                } else
+                {
+                    summaryText += bestProductivityTimes[i].Item1 + "am \n";
                 }
-                stringDBTest += "(" + i + ", " + average.ToString("0.00") + ")\n";
             }
-            t_Summary.Text = stringDBTest;
+            t_Summary.Text = summaryText;
         }
 
         void ClearClicked(object sender, EventArgs e)
@@ -220,6 +223,41 @@ namespace Productivity_Tracker
         {
             SetContentView(Resource.Layout.Main);
             LoadMain();
+        }
+
+        float[] CalculateAverage(Tuple<int, int>[] prodHours)
+        {
+            float[] prodHoursAverage = new float[24];
+            for (int i = 0; i < prodHours.Length; i++)
+            {
+                if (prodHours[i].Item1 != 0)
+                {
+                    prodHoursAverage[i] = (float)prodHours[i].Item2 / (float)prodHours[i].Item1;
+                }
+            }
+            return prodHoursAverage;
+        }
+
+        List<Tuple<int, float>> CalculateBestTimes(float[] prodHoursAverages)
+        {
+            float max = 0;
+            List<Tuple<int, float>> bestProdTimes = new List<Tuple<int, float>>();
+            for (int i = 0; i < prodHoursAverages.Length; i++)
+            {
+                if (max < prodHoursAverages[i])
+                {
+                    max = prodHoursAverages[i];
+                }
+            }
+
+            for (int hour = 0; hour < prodHoursAverages.Length; hour++)
+            {
+                if (prodHoursAverages[hour] >= max - 1)
+                {
+                    bestProdTimes.Add(new Tuple<int, float>(hour, prodHoursAverages[hour]));
+                }
+            }
+            return bestProdTimes;
         }
 
         void FakeData()
