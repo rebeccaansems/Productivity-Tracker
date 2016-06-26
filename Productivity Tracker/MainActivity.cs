@@ -22,9 +22,8 @@ namespace Productivity_Tracker
         public static string dbPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), dbName);
 #endif
 
-        protected override void OnCreate(Bundle bundle)
-        {
-        }
+        void SetNotifications()
+        { }
     }
 }
 

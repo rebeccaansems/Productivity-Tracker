@@ -13,7 +13,6 @@ namespace Productivity_Tracker
     [Activity(Label = "Productivity_Tracker", MainLauncher = true)]
     public class ButtonController : Activity
     {
-
         Button b_Awesome, b_Good, b_Mediocre, b_Poor, b_Terrible;
         Button b_Graph, b_Summary, b_Clear;
 
@@ -37,6 +36,12 @@ namespace Productivity_Tracker
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             LoadMain();
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            CreateNotification();
         }
 
         void LoadMain()
@@ -69,10 +74,28 @@ namespace Productivity_Tracker
                 if (dataPoint.DateHour == DateTime.Now.Hour && dataPoint.DateDay == DateTime.Now.Date)
                 {
                     DisbleButtons();
-                    Console.WriteLine("[PRD] BUTTON NO");
                 }
-                Console.WriteLine("[PRD] " + dataPoint.DateHour + " COMPARED " + DateTime.Now.Hour);
             }
+        }
+
+        void CreateNotification()
+        {// Instantiate the builder and set notification elements:
+            Notification.Builder builder = new Notification.Builder(this);
+
+            builder.SetContentTitle("Sample Notification");
+            builder.SetContentText("Hello World! This is my first notification!");
+            builder.SetSmallIcon(Resource.Drawable.icon_notification);
+
+            // Build the notification:
+            Notification notification = builder.Build();
+
+            //// Get the notification manager:
+            NotificationManager notificationManager =
+                GetSystemService(Context.NotificationService) as NotificationManager;
+
+            //// Publish the notification:
+            const int notificationId = 0;
+            notificationManager.Notify(notificationId, notification);
         }
 
         void LoadSummary()
