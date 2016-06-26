@@ -9,8 +9,9 @@
         android:text="How are you feeling?"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
-        android:layout_height="278.0dp"
-        android:id="@+id/textFeeling" />
+        android:layout_height="109.0dp"
+        android:id="@+id/textFeeling"
+        android:layout_marginBottom="0.0dp" />
     <Button
         android:text="Awesome"
         android:layout_width="match_parent"
@@ -47,4 +48,9 @@
             android:text="Summary"
             android:id="@+id/buttonSummary" />
     </GridLayout>
+    <Button
+        android:text="Clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonClear" />
 </LinearLayout>

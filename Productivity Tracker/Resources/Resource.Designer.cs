@@ -63,6 +63,9 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f050001
 			public const int buttonAwesome = 2131034113;
 			
+			// aapt resource value: 0x7f050009
+			public const int buttonClear = 2131034121;
+			
 			// aapt resource value: 0x7f050002
 			public const int buttonGood = 2131034114;
 			

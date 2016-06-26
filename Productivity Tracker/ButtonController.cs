@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.App;
 using Android.Content;
 using Android.Runtime;
@@ -14,7 +15,7 @@ namespace Productivity_Tracker
     {
 
         Button b_Awesome, b_Good, b_Mediocre, b_Poor, b_Terrible;
-        Button b_Graph, b_Summary;
+        Button b_Graph, b_Summary, b_Clear;
 
         TextView t_console;
 
@@ -40,6 +41,7 @@ namespace Productivity_Tracker
 
             b_Graph = FindViewById<Button>(Resource.Id.buttonGraph);
             b_Summary = FindViewById<Button>(Resource.Id.buttonSummary);
+            b_Clear = FindViewById<Button>(Resource.Id.buttonClear);
 
             t_console = FindViewById<TextView>(Resource.Id.textFeeling);
 
@@ -51,64 +53,139 @@ namespace Productivity_Tracker
 
             b_Graph.Click += GraphClicked;
             b_Summary.Click += SummaryClicked;
+            b_Clear.Click += ClearClicked;
+
+            var database = db.Table<ProductiveData>();
+            foreach (var dataPoint in database)
+            {
+                if (dataPoint.DateHour == DateTime.Now.Hour && dataPoint.DateDay == DateTime.Now.Date)
+                {
+                    DisbleButtons();
+                    Console.WriteLine("[PRD] BUTTON NO");
+                }
+                Console.WriteLine("[PRD] " + dataPoint.DateHour + " COMPARED " + DateTime.Now.Hour);
+            }
         }
 
         void AwesomeClicked(object sender, EventArgs e)
         {
-            b_Awesome.Text = MainActivity.dbPath;
-            ProductiveData p_Data = new ProductiveData { Date = DateTime.Now, ProdutivityLevel =  1};
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 5 };
             db.Insert(p_Data);
+            DisbleButtons();
         }
 
         void GoodClicked(object sender, EventArgs e)
         {
-            b_Good.Text = "2";
-            ProductiveData p_Data = new ProductiveData { Date = DateTime.Now, ProdutivityLevel =  2};
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 4 };
             db.Insert(p_Data);
+            DisbleButtons();
         }
 
         void MediocreClicked(object sender, EventArgs e)
         {
-            b_Mediocre.Text = "3";
-            ProductiveData p_Data = new ProductiveData { Date = DateTime.Now, ProdutivityLevel =  3};
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 3 };
             db.Insert(p_Data);
+            DisbleButtons();
         }
 
         void PoorClicked(object sender, EventArgs e)
         {
-            b_Poor.Text = "4";
-            ProductiveData p_Data = new ProductiveData { Date = DateTime.Now, ProdutivityLevel =  4};
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 2 };
             db.Insert(p_Data);
+            DisbleButtons();
         }
 
         void TerribleClicked(object sender, EventArgs e)
         {
-            b_Terrible.Text = "5";
-            ProductiveData p_Data = new ProductiveData { Date = DateTime.Now, ProdutivityLevel =  5};
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 1 };
             db.Insert(p_Data);
+            DisbleButtons();
+        }
+
+        // --------------------------------------------
+
+        void DisbleButtons()
+        {
+            b_Awesome.Enabled = false;
+            b_Good.Enabled = false;
+            b_Mediocre.Enabled = false;
+            b_Poor.Enabled = false;
+            b_Terrible.Enabled = false;
         }
 
         // --------------------------------------------
 
         void GraphClicked(object sender, EventArgs e)
         {
-            b_Graph.Text = "G";
-
-            Console.WriteLine("Reading data");
-            var table = db.Table<ProductiveData>();
+            var database = db.Table<ProductiveData>();
             string stringDBTest = "";
-            foreach (var s in table)
+            foreach (var dataPoint in database)
             {
-                stringDBTest += s.DataNum+": "+s.Date + " " + s.ProdutivityLevel+"\n";
+                stringDBTest += dataPoint.DataNum + ": " + dataPoint.DateHour + " " + dataPoint.ProdutivityLevel + "\n";
             }
             t_console.Text = stringDBTest;
         }
 
         void SummaryClicked(object sender, EventArgs e)
         {
+            Tuple<int, int>[] productivityHour = new Tuple<int, int>[24];
+            int productiveDataPoints = 0, productivityLevelTotalHour = 0;
+            FakeData();
+
+            var database = db.Table<ProductiveData>();
+            for (int i = 0; i < 24; i++)
+            {
+                productivityHour[i] = new Tuple<int, int>(0, 0);
+            }
+
+            foreach (var dataPoint in database)
+            {
+                productiveDataPoints = productivityHour[dataPoint.DateHour].Item1 + 1;
+                productivityLevelTotalHour = productivityHour[dataPoint.DateHour].Item2 + dataPoint.ProdutivityLevel;
+                productivityHour[dataPoint.DateHour] = new Tuple<int, int>(productiveDataPoints, productivityLevelTotalHour);
+            }
+
+            string stringDBTest = "";
+            for (int i = 0; i < 24; i++)
+            {
+                float average = 0;
+                if (productivityHour[i].Item1 != 0)
+                {
+                    average = (float)productivityHour[i].Item2 / (float)productivityHour[i].Item1;
+                }
+                stringDBTest += "(" + i + ", " + average.ToString("0.00")+ ")\t";
+            }
+            t_console.Text = stringDBTest;
+        }
+
+        void ClearClicked(object sender, EventArgs e)
+        {
             db.DeleteAll<ProductiveData>();
-            b_Summary.Text = "S";
+        }
+
+
+        void FakeData()
+        {
+            ProductiveData p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 5 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 4 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 3 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 2 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 1 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 8, DateDay = DateTime.Now.Date, ProdutivityLevel = 5 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 2, DateDay = DateTime.Now.Date, ProdutivityLevel = 4 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 1, DateDay = DateTime.Now.Date, ProdutivityLevel = 3 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 9, DateDay = DateTime.Now.Date, ProdutivityLevel = 2 };
+            db.Insert(p_Data);
+            p_Data = new ProductiveData { DateHour = 9, DateDay = DateTime.Now.Date, ProdutivityLevel = 1 };
+            db.Insert(p_Data);
         }
     }
 }
-
