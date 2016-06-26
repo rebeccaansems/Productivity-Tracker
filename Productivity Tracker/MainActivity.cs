@@ -24,7 +24,7 @@ namespace Productivity_Tracker
 #endif
 
         Button b_Awesome, b_Good, b_Mediocre, b_Poor, b_Terrible;
-        Button b_Graph, b_Summary, b_Clear;
+        Button b_Summary, b_RawData, b_Clear;
 
         TextView t_console;
 
@@ -62,7 +62,7 @@ namespace Productivity_Tracker
             b_Poor = FindViewById<Button>(Resource.Id.buttonPoor);
             b_Terrible = FindViewById<Button>(Resource.Id.buttonTerrible);
 
-            b_Graph = FindViewById<Button>(Resource.Id.buttonGraph);
+            b_RawData = FindViewById<Button>(Resource.Id.buttonRawData);
             b_Summary = FindViewById<Button>(Resource.Id.buttonSummary);
             b_Clear = FindViewById<Button>(Resource.Id.buttonClear);
 
@@ -74,8 +74,8 @@ namespace Productivity_Tracker
             b_Poor.Click += PoorClicked;
             b_Terrible.Click += TerribleClicked;
 
-            b_Graph.Click += GraphClicked;
             b_Summary.Click += SummaryClicked;
+            b_RawData.Click += RawDataClicked;
             b_Clear.Click += ClearClicked;
 
             var database = db.Table<ProductiveData>();
@@ -171,12 +171,6 @@ namespace Productivity_Tracker
 
         // --------------------------------------------
 
-        void GraphClicked(object sender, EventArgs e)
-        {
-            SetContentView(Resource.Layout.Graph);
-            LoadGraph();
-        }
-
         void SummaryClicked(object sender, EventArgs e)
         {
             SetContentView(Resource.Layout.Summary);
@@ -223,6 +217,12 @@ namespace Productivity_Tracker
         {
             SetContentView(Resource.Layout.Main);
             LoadMain();
+        }
+
+        void RawDataClicked(object sender, EventArgs e)
+        {
+            SetContentView(Resource.Layout.Raw_Data);
+            LoadGraph();
         }
 
         float[] CalculateAverage(Tuple<int, int>[] prodHours)
