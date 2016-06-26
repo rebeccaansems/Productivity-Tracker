@@ -19,6 +19,12 @@ namespace Productivity_Tracker
 
         TextView t_console;
 
+        Button b_BackSummary;
+
+        TextView t_Summary;
+
+        Button b_BackGraph;
+
         SQLiteConnection db;
 
         protected override void OnCreate(Bundle bundle)
@@ -30,9 +36,11 @@ namespace Productivity_Tracker
 
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
+            LoadMain();
+        }
 
-            // Get our button from the layout resource,
-            // and attach an event to it
+        void LoadMain()
+        {
             b_Awesome = FindViewById<Button>(Resource.Id.buttonAwesome);
             b_Good = FindViewById<Button>(Resource.Id.buttonGood);
             b_Mediocre = FindViewById<Button>(Resource.Id.buttonMediocre);
@@ -65,6 +73,21 @@ namespace Productivity_Tracker
                 }
                 Console.WriteLine("[PRD] " + dataPoint.DateHour + " COMPARED " + DateTime.Now.Hour);
             }
+        }
+
+        void LoadSummary()
+        {
+            b_BackSummary = FindViewById<Button>(Resource.Id.buttonBackSummary);
+            t_Summary = FindViewById<TextView>(Resource.Id.textSummary);
+
+            b_BackSummary.Click += BackClicked;
+        }
+
+        void LoadGraph()
+        {
+            b_BackGraph = FindViewById<Button>(Resource.Id.buttonBackGraph);
+
+            b_BackGraph.Click += BackClicked;
         }
 
         void AwesomeClicked(object sender, EventArgs e)
@@ -117,17 +140,15 @@ namespace Productivity_Tracker
 
         void GraphClicked(object sender, EventArgs e)
         {
-            var database = db.Table<ProductiveData>();
-            string stringDBTest = "";
-            foreach (var dataPoint in database)
-            {
-                stringDBTest += dataPoint.DataNum + ": " + dataPoint.DateHour + " " + dataPoint.ProdutivityLevel + "\n";
-            }
-            t_console.Text = stringDBTest;
+            SetContentView(Resource.Layout.Graph);
+            LoadGraph();
         }
 
         void SummaryClicked(object sender, EventArgs e)
         {
+            SetContentView(Resource.Layout.Summary);
+            LoadSummary();
+
             Tuple<int, int>[] productivityHour = new Tuple<int, int>[24];
             int productiveDataPoints = 0, productivityLevelTotalHour = 0;
             FakeData();
@@ -153,9 +174,9 @@ namespace Productivity_Tracker
                 {
                     average = (float)productivityHour[i].Item2 / (float)productivityHour[i].Item1;
                 }
-                stringDBTest += "(" + i + ", " + average.ToString("0.00")+ ")\t";
+                stringDBTest += "(" + i + ", " + average.ToString("0.00") + ")\n";
             }
-            t_console.Text = stringDBTest;
+            t_Summary.Text = stringDBTest;
         }
 
         void ClearClicked(object sender, EventArgs e)
@@ -163,6 +184,11 @@ namespace Productivity_Tracker
             db.DeleteAll<ProductiveData>();
         }
 
+        void BackClicked(object sender, EventArgs e)
+        {
+            SetContentView(Resource.Layout.Main);
+            LoadMain();
+        }
 
         void FakeData()
         {
