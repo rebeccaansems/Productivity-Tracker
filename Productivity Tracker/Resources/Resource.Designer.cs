@@ -66,11 +66,14 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f050001
 			public const int buttonAwesome = 2131034113;
 			
-			// aapt resource value: 0x7f05000b
-			public const int buttonBackSummary = 2131034123;
+			// aapt resource value: 0x7f05000a
+			public const int buttonBackRaw = 2131034122;
 			
-			// aapt resource value: 0x7f050009
-			public const int buttonClear = 2131034121;
+			// aapt resource value: 0x7f05000c
+			public const int buttonBackSummary = 2131034124;
+			
+			// aapt resource value: 0x7f050006
+			public const int buttonClear = 2131034118;
 			
 			// aapt resource value: 0x7f050002
 			public const int buttonGood = 2131034114;
@@ -90,14 +93,14 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f050005
 			public const int buttonTerrible = 2131034117;
 			
-			// aapt resource value: 0x7f050006
-			public const int gridLayout1 = 2131034118;
-			
 			// aapt resource value: 0x7f050000
 			public const int textFeeling = 2131034112;
 			
-			// aapt resource value: 0x7f05000a
-			public const int textSummary = 2131034122;
+			// aapt resource value: 0x7f050009
+			public const int textRaw = 2131034121;
+			
+			// aapt resource value: 0x7f05000b
+			public const int textSummary = 2131034123;
 			
 			static Id()
 			{

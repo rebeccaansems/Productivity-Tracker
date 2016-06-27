@@ -32,7 +32,7 @@ namespace Productivity_Tracker
 
         TextView t_Summary;
 
-        Button b_BackGraph;
+        Button b_BackRaw;
 
         SQLiteConnection db;
 
@@ -89,23 +89,13 @@ namespace Productivity_Tracker
         }
 
         void CreateNotification()
-        {// Instantiate the builder and set notification elements:
-            Notification.Builder builder = new Notification.Builder(this);
+        {
+            var alarmIntent = new Intent(this, typeof(AlarmReceiver));
 
-            builder.SetContentTitle("Sample Notification");
-            builder.SetContentText("Hello World! This is my first notification!");
-            builder.SetSmallIcon(Resource.Drawable.icon_notification);
+            var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
-            // Build the notification:
-            Notification notification = builder.Build();
-
-            //// Get the notification manager:
-            NotificationManager notificationManager =
-                GetSystemService(Context.NotificationService) as NotificationManager;
-
-            //// Publish the notification:
-            const int notificationId = 0;
-            notificationManager.Notify(notificationId, notification);
+            var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
+            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 60 * 60 * 1000, pending);//notify in one hour
         }
 
         void LoadSummary()
@@ -116,11 +106,11 @@ namespace Productivity_Tracker
             b_BackSummary.Click += BackClicked;
         }
 
-        void LoadGraph()
+        void LoadRawData()
         {
-            b_BackGraph = FindViewById<Button>(Resource.Id.buttonBackGraph);
+            b_BackRaw = FindViewById<Button>(Resource.Id.buttonBackRaw);
 
-            b_BackGraph.Click += BackClicked;
+            b_BackRaw.Click += BackClicked;
         }
 
         void AwesomeClicked(object sender, EventArgs e)
@@ -222,7 +212,7 @@ namespace Productivity_Tracker
         void RawDataClicked(object sender, EventArgs e)
         {
             SetContentView(Resource.Layout.Raw_Data);
-            LoadGraph();
+            LoadRawData();
         }
 
         float[] CalculateAverage(Tuple<int, int>[] prodHours)
