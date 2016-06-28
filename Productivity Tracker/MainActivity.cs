@@ -34,6 +34,8 @@ namespace Productivity_Tracker
 
         Button b_BackRaw;
 
+        TextView t_RawData;
+
         SQLiteConnection db;
 
         protected override void OnCreate(Bundle bundle)
@@ -81,7 +83,7 @@ namespace Productivity_Tracker
             var database = db.Table<ProductiveData>();
             foreach (var dataPoint in database)
             {
-                if (dataPoint.DateHour == DateTime.Now.Hour && dataPoint.DateDay == DateTime.Now.Date)
+                if (dataPoint.DateHour == DateTime.Now.Hour && dataPoint.DateDay == DateTime.Now.Day && dataPoint.DateMonth == DateTime.Now.Month)
                 {
                     DisbleButtons();
                 }
@@ -95,7 +97,7 @@ namespace Productivity_Tracker
             var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
             var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 60 * 60 * 1000, pending);//notify in one hour
+            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 60 * 2 * 1000, pending);//notify in one hour
         }
 
         void LoadSummary()
@@ -109,41 +111,50 @@ namespace Productivity_Tracker
         void LoadRawData()
         {
             b_BackRaw = FindViewById<Button>(Resource.Id.buttonBackRaw);
+            t_RawData = FindViewById<TextView>(Resource.Id.textRawdata);
+            var database = db.Table<ProductiveData>();
+            string dbAllData = "";
+
+            foreach (var dataPoint in database)
+            {
+                dbAllData += "Date: "+dataPoint.DateMonth+"/"+dataPoint.DateDay+" Time: "+dataPoint.DateHour + " Productivity Level: " + dataPoint.ProdutivityLevel+"\n";
+            }
+
+            t_RawData.Text = dbAllData;
 
             b_BackRaw.Click += BackClicked;
         }
 
         void AwesomeClicked(object sender, EventArgs e)
         {
-            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 5 };
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Day, DateMonth = DateTime.Now.Month, ProdutivityLevel = 5 };
             db.Insert(p_Data);
             DisbleButtons();
         }
 
         void GoodClicked(object sender, EventArgs e)
         {
-            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 4 };
-            db.Insert(p_Data);
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Day, DateMonth = DateTime.Now.Month, ProdutivityLevel = 4 };
             DisbleButtons();
         }
 
         void MediocreClicked(object sender, EventArgs e)
         {
-            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 3 };
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Day, DateMonth = DateTime.Now.Month, ProdutivityLevel = 3 };
             db.Insert(p_Data);
             DisbleButtons();
         }
 
         void PoorClicked(object sender, EventArgs e)
         {
-            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 2 };
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Day, DateMonth = DateTime.Now.Month, ProdutivityLevel = 2 };
             db.Insert(p_Data);
             DisbleButtons();
         }
 
         void TerribleClicked(object sender, EventArgs e)
         {
-            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Date, ProdutivityLevel = 1 };
+            ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Day, DateMonth = DateTime.Now.Month, ProdutivityLevel = 1 };
             db.Insert(p_Data);
             DisbleButtons();
         }
@@ -168,7 +179,6 @@ namespace Productivity_Tracker
 
             Tuple<int, int>[] productivityHour = new Tuple<int, int>[24];
             int productiveDataPoints = 0, productivityLevelTotalHour = 0;
-            FakeData();
 
             var database = db.Table<ProductiveData>();
             for (int i = 0; i < productivityHour.Length; i++)
@@ -248,30 +258,6 @@ namespace Productivity_Tracker
                 }
             }
             return bestProdTimes;
-        }
-
-        void FakeData()
-        {
-            ProductiveData p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 5 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 4 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 3 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 2 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 12, DateDay = DateTime.Now.Date, ProdutivityLevel = 1 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 8, DateDay = DateTime.Now.Date, ProdutivityLevel = 5 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 2, DateDay = DateTime.Now.Date, ProdutivityLevel = 4 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 1, DateDay = DateTime.Now.Date, ProdutivityLevel = 3 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 9, DateDay = DateTime.Now.Date, ProdutivityLevel = 2 };
-            db.Insert(p_Data);
-            p_Data = new ProductiveData { DateHour = 9, DateDay = DateTime.Now.Date, ProdutivityLevel = 1 };
-            db.Insert(p_Data);
         }
     }
 }
