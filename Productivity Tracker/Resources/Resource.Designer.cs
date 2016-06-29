@@ -41,6 +41,25 @@ namespace Productivity_Tracker
 			}
 		}
 		
+		public partial class Color
+		{
+			
+			// aapt resource value: 0x7f050000
+			public const int theme_custom_background = 2131034112;
+			
+			// aapt resource value: 0x7f050001
+			public const int theme_devicedefault_background = 2131034113;
+			
+			static Color()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Color()
+			{
+			}
+		}
+		
 		public partial class Drawable
 		{
 			
@@ -63,47 +82,56 @@ namespace Productivity_Tracker
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f050001
-			public const int buttonAwesome = 2131034113;
+			// aapt resource value: 0x7f070001
+			public const int buttonAwesome = 2131165185;
 			
-			// aapt resource value: 0x7f05000b
-			public const int buttonBackRaw = 2131034123;
+			// aapt resource value: 0x7f07000e
+			public const int buttonBackRaw = 2131165198;
 			
-			// aapt resource value: 0x7f05000d
-			public const int buttonBackSummary = 2131034125;
+			// aapt resource value: 0x7f070010
+			public const int buttonBackSummary = 2131165200;
 			
-			// aapt resource value: 0x7f050006
-			public const int buttonClear = 2131034118;
+			// aapt resource value: 0x7f07000b
+			public const int buttonClear = 2131165195;
 			
-			// aapt resource value: 0x7f050002
-			public const int buttonGood = 2131034114;
+			// aapt resource value: 0x7f070002
+			public const int buttonGood = 2131165186;
 			
-			// aapt resource value: 0x7f050003
-			public const int buttonMediocre = 2131034115;
+			// aapt resource value: 0x7f070003
+			public const int buttonMediocre = 2131165187;
 			
-			// aapt resource value: 0x7f050004
-			public const int buttonPoor = 2131034116;
+			// aapt resource value: 0x7f07000a
+			public const int buttonOptions = 2131165194;
 			
-			// aapt resource value: 0x7f050007
-			public const int buttonRawData = 2131034119;
+			// aapt resource value: 0x7f070004
+			public const int buttonPoor = 2131165188;
 			
-			// aapt resource value: 0x7f050008
-			public const int buttonSummary = 2131034120;
+			// aapt resource value: 0x7f070008
+			public const int buttonRawData = 2131165192;
 			
-			// aapt resource value: 0x7f050005
-			public const int buttonTerrible = 2131034117;
+			// aapt resource value: 0x7f070009
+			public const int buttonSummary = 2131165193;
 			
-			// aapt resource value: 0x7f050009
-			public const int scrollRawData = 2131034121;
+			// aapt resource value: 0x7f070005
+			public const int buttonTerrible = 2131165189;
 			
-			// aapt resource value: 0x7f050000
-			public const int textFeeling = 2131034112;
+			// aapt resource value: 0x7f070007
+			public const int linearLayout1 = 2131165191;
 			
-			// aapt resource value: 0x7f05000a
-			public const int textRawdata = 2131034122;
+			// aapt resource value: 0x7f070006
+			public const int relativeLayout1 = 2131165190;
 			
-			// aapt resource value: 0x7f05000c
-			public const int textSummary = 2131034124;
+			// aapt resource value: 0x7f07000c
+			public const int scrollRawData = 2131165196;
+			
+			// aapt resource value: 0x7f070000
+			public const int textFeeling = 2131165184;
+			
+			// aapt resource value: 0x7f07000d
+			public const int textRawdata = 2131165197;
+			
+			// aapt resource value: 0x7f07000f
+			public const int textSummary = 2131165199;
 			
 			static Id()
 			{
@@ -122,10 +150,13 @@ namespace Productivity_Tracker
 			public const int Main = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int Raw_Data = 2130903041;
+			public const int MainOri = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int Summary = 2130903042;
+			public const int Raw_Data = 2130903042;
+			
+			// aapt resource value: 0x7f030003
+			public const int Summary = 2130903043;
 			
 			static Layout()
 			{
@@ -152,6 +183,22 @@ namespace Productivity_Tracker
 			}
 			
 			private String()
+			{
+			}
+		}
+		
+		public partial class Style
+		{
+			
+			// aapt resource value: 0x7f060000
+			public const int Theme_Custom = 2131099648;
+			
+			static Style()
+			{
+				global::Android.Runtime.ResourceIdManager.UpdateIdValues();
+			}
+			
+			private Style()
 			{
 			}
 		}

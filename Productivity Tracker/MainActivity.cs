@@ -66,7 +66,7 @@ namespace Productivity_Tracker
 
             b_RawData = FindViewById<Button>(Resource.Id.buttonRawData);
             b_Summary = FindViewById<Button>(Resource.Id.buttonSummary);
-            b_Clear = FindViewById<Button>(Resource.Id.buttonClear);
+            //b_Clear = FindViewById<Button>(Resource.Id.buttonClear);
 
             t_console = FindViewById<TextView>(Resource.Id.textFeeling);
 
@@ -78,7 +78,7 @@ namespace Productivity_Tracker
 
             b_Summary.Click += SummaryClicked;
             b_RawData.Click += RawDataClicked;
-            b_Clear.Click += ClearClicked;
+            //b_Clear.Click += ClearClicked;
 
             var database = db.Table<ProductiveData>();
             foreach (var dataPoint in database)
