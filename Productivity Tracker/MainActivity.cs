@@ -24,17 +24,19 @@ namespace Productivity_Tracker
 #endif
 
         Button b_Awesome, b_Good, b_Mediocre, b_Poor, b_Terrible;
-        Button b_Summary, b_RawData, b_Clear;
+        Button b_Summary, b_RawData, b_Options;
 
         TextView t_console;
 
-        Button b_BackSummary;
+        Button b_Main;
 
-        TextView t_Summary;
+        TextView t_SummaryMost, t_SummaryLeast;
 
         Button b_BackRaw;
 
         TextView t_RawData;
+
+        Button b_Clear;
 
         SQLiteConnection db;
 
@@ -66,7 +68,6 @@ namespace Productivity_Tracker
 
             b_RawData = FindViewById<Button>(Resource.Id.buttonRawData);
             b_Summary = FindViewById<Button>(Resource.Id.buttonSummary);
-            //b_Clear = FindViewById<Button>(Resource.Id.buttonClear);
 
             t_console = FindViewById<TextView>(Resource.Id.textFeeling);
 
@@ -78,7 +79,6 @@ namespace Productivity_Tracker
 
             b_Summary.Click += SummaryClicked;
             b_RawData.Click += RawDataClicked;
-            //b_Clear.Click += ClearClicked;
 
             var database = db.Table<ProductiveData>();
             foreach (var dataPoint in database)
@@ -102,10 +102,14 @@ namespace Productivity_Tracker
 
         void LoadSummary()
         {
-            b_BackSummary = FindViewById<Button>(Resource.Id.buttonBackSummary);
-            t_Summary = FindViewById<TextView>(Resource.Id.textSummary);
+            b_Main = FindViewById<Button>(Resource.Id.buttonMain);
+            b_RawData = FindViewById<Button>(Resource.Id.buttonRawData);
+            b_Options = FindViewById<Button>(Resource.Id.buttonOptions);
+            t_SummaryMost = FindViewById<TextView>(Resource.Id.textSummaryMost);
+            t_SummaryLeast = FindViewById<TextView>(Resource.Id.textSummaryLeast);
 
-            b_BackSummary.Click += BackClicked;
+            b_Main.Click += MainClicked;
+            b_RawData.Click += RawDataClicked;
         }
 
         void LoadRawData()
@@ -122,7 +126,7 @@ namespace Productivity_Tracker
 
             t_RawData.Text = dbAllData;
 
-            b_BackRaw.Click += BackClicked;
+            b_BackRaw.Click += MainClicked;
         }
 
         void AwesomeClicked(object sender, EventArgs e)
@@ -194,18 +198,20 @@ namespace Productivity_Tracker
             }
             List<Tuple<int, float>> bestProductivityTimes = CalculateBestTimes(CalculateAverage(productivityHour));
 
-            string summaryText = "The times your are most productive are:\n";
-            for(int i=0; i<bestProductivityTimes.Count; i++)
+            string summaryMostText = "";
+            for (int i = 0; i < bestProductivityTimes.Count; i++)
             {
                 if (bestProductivityTimes[i].Item1 > 12)
                 {
-                    summaryText += bestProductivityTimes[i].Item1 - 12 + "pm \n";
-                } else
+                    summaryMostText += bestProductivityTimes[i].Item1 - 12 + "pm \n";
+                }
+                else
                 {
-                    summaryText += bestProductivityTimes[i].Item1 + "am \n";
+                    summaryMostText += bestProductivityTimes[i].Item1 + "am \n";
                 }
             }
-            t_Summary.Text = summaryText;
+
+            t_SummaryMost.Text = summaryMostText;
         }
 
         void ClearClicked(object sender, EventArgs e)
@@ -213,7 +219,7 @@ namespace Productivity_Tracker
             db.DeleteAll<ProductiveData>();
         }
 
-        void BackClicked(object sender, EventArgs e)
+        void MainClicked(object sender, EventArgs e)
         {
             SetContentView(Resource.Layout.Main);
             LoadMain();
