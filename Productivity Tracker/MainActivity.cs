@@ -55,6 +55,9 @@ namespace Productivity_Tracker
             CreateNotification();
         }
 
+        // --------------------------------------------
+        // ------------- Load different views
+
         void LoadFooter()
         {
             b_Summary = FindViewById<Button>(Resource.Id.buttonSummary);
@@ -110,7 +113,7 @@ namespace Productivity_Tracker
 
             //Set min/max times
             hourMin = 8;
-            hourMax = 12 + 10;
+            hourMax = 12 + 9;
             minuteMin = 0;
             minuteMax = 0;
 
@@ -128,6 +131,9 @@ namespace Productivity_Tracker
             UpdateTimes();
         }
 
+        // --------------------------------------------
+        // ------------- Notifications
+
         void CreateNotification()
         {
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
@@ -143,6 +149,9 @@ namespace Productivity_Tracker
             alarmManager.Set(AlarmType.ElapsedRealtime, timeDifference, pending);
         }
 
+        // --------------------------------------------
+        // ------------- Productivity buttons
+
         void AwesomeClicked(object sender, EventArgs e)
         {
             ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Day, DateMonth = DateTime.Now.Month, ProdutivityLevel = 5 };
@@ -153,6 +162,7 @@ namespace Productivity_Tracker
         void GoodClicked(object sender, EventArgs e)
         {
             ProductiveData p_Data = new ProductiveData { DateHour = DateTime.Now.Hour, DateDay = DateTime.Now.Day, DateMonth = DateTime.Now.Month, ProdutivityLevel = 4 };
+            db.Insert(p_Data);
             DisbleButtons();
         }
 
@@ -177,8 +187,6 @@ namespace Productivity_Tracker
             DisbleButtons();
         }
 
-        // --------------------------------------------
-
         void DisbleButtons()
         {
             b_Awesome.Enabled = false;
@@ -189,6 +197,7 @@ namespace Productivity_Tracker
         }
 
         // --------------------------------------------
+        // ------------- View buttons (in footer) clicked
 
         void MainClicked(object sender, EventArgs e)
         {
@@ -288,6 +297,9 @@ namespace Productivity_Tracker
             }
         }
 
+        // --------------------------------------------
+        // ------------- Other
+
         //delete the database
         void ClearClicked(object sender, EventArgs e)
         {
@@ -347,6 +359,7 @@ namespace Productivity_Tracker
             return bestWorstProdTimes;
         }
 
+        //callback for earliest notification time (Options Menu)
         private void TimePickerCallbackMinimum(object sender, TimePickerDialog.TimeSetEventArgs e)
         {
             hourMin = e.HourOfDay;
@@ -354,6 +367,7 @@ namespace Productivity_Tracker
             UpdateTimes();
         }
 
+        //callback for latest notification time (Options Menu)
         private void TimePickerCallbackMaximum(object sender, TimePickerDialog.TimeSetEventArgs e)
         {
             hourMax = e.HourOfDay;
@@ -386,6 +400,7 @@ namespace Productivity_Tracker
             return string.Format(openingStatement + "{0}:{1}AM", hour, min.ToString().PadLeft(2, '0'));
         }
 
+        //update display times (Options Menu)
         void UpdateTimes()
         {
             DateTime dateTimeMin = new DateTime(2016, 1, 1, hourMin, minuteMin, 0);
@@ -412,6 +427,7 @@ namespace Productivity_Tracker
             t_TimeMax.Text = timeMax;
         }
 
+        //opens time selection screen (Options Menu)
         const int minID = 0, maxID = 1;
         protected override Dialog OnCreateDialog(int id)
         {
