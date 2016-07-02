@@ -8,7 +8,7 @@
     android:minWidth="25px"
     android:minHeight="25px">
     <TextView
-        android:text="You're most productive at:"
+        android:text="Most Productive Times"
         android:typeface="sans"
         android:textStyle="bold"
         android:textSize="20dp"
@@ -29,13 +29,14 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="181.5dp"
+        android:paddingLeft="10dp"
         android:id="@+id/textSummaryMost" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@android:color/white" />
     <TextView
-        android:text="You're least productive at:"
+        android:text="Least Productive Times"
         android:typeface="sans"
         android:textStyle="bold"
         android:textSize="20dp"
@@ -56,6 +57,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_width="match_parent"
         android:layout_height="209.7dp"
+        android:paddingLeft="10dp"
         android:id="@+id/textSummaryLeast" />
     <RelativeLayout
         android:minWidth="25px"
@@ -72,14 +74,14 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
             <Button
-                android:text="Raw Data"
+                android:text="Summary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
                 android:typeface="sans"
                 android:textSize="18dp"
                 android:textAllCaps="true"
-                android:id="@+id/buttonRawData" />
+                android:id="@+id/buttonSummary" />
             <Button
                 android:text="Main"
                 android:layout_width="0dp"

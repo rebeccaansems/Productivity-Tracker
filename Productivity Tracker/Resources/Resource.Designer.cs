@@ -82,14 +82,20 @@ namespace Productivity_Tracker
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f070015
+			public const int b_Clear = 2131165205;
+			
+			// aapt resource value: 0x7f070013
+			public const int b_TimeMax = 2131165203;
+			
+			// aapt resource value: 0x7f070011
+			public const int b_TimeMin = 2131165201;
+			
 			// aapt resource value: 0x7f070001
 			public const int buttonAwesome = 2131165185;
 			
-			// aapt resource value: 0x7f07000f
-			public const int buttonBackRaw = 2131165199;
-			
-			// aapt resource value: 0x7f070016
-			public const int buttonBackSummary = 2131165206;
+			// aapt resource value: 0x7f07001a
+			public const int buttonBackSummary = 2131165210;
 			
 			// aapt resource value: 0x7f07000c
 			public const int buttonClear = 2131165196;
@@ -97,8 +103,8 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f070002
 			public const int buttonGood = 2131165186;
 			
-			// aapt resource value: 0x7f070014
-			public const int buttonMain = 2131165204;
+			// aapt resource value: 0x7f070009
+			public const int buttonMain = 2131165193;
 			
 			// aapt resource value: 0x7f070003
 			public const int buttonMediocre = 2131165187;
@@ -109,11 +115,11 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f070004
 			public const int buttonPoor = 2131165188;
 			
-			// aapt resource value: 0x7f070008
-			public const int buttonRawData = 2131165192;
+			// aapt resource value: 0x7f07000d
+			public const int buttonRawData = 2131165197;
 			
-			// aapt resource value: 0x7f070009
-			public const int buttonSummary = 2131165193;
+			// aapt resource value: 0x7f070008
+			public const int buttonSummary = 2131165192;
 			
 			// aapt resource value: 0x7f070005
 			public const int buttonTerrible = 2131165189;
@@ -121,35 +127,41 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f070007
 			public const int linearLayout1 = 2131165191;
 			
+			// aapt resource value: 0x7f07000f
+			public const int linearLayout2 = 2131165199;
+			
 			// aapt resource value: 0x7f070006
 			public const int relativeLayout1 = 2131165190;
 			
-			// aapt resource value: 0x7f07000d
-			public const int scrollRawData = 2131165197;
+			// aapt resource value: 0x7f070014
+			public const int t_ClearData = 2131165204;
+			
+			// aapt resource value: 0x7f070012
+			public const int t_TimeMax = 2131165202;
+			
+			// aapt resource value: 0x7f070010
+			public const int t_TimeMin = 2131165200;
 			
 			// aapt resource value: 0x7f07000b
 			public const int textFeeling = 2131165195;
 			
-			// aapt resource value: 0x7f07000e
-			public const int textRawdata = 2131165198;
+			// aapt resource value: 0x7f070019
+			public const int textSummary = 2131165209;
 			
-			// aapt resource value: 0x7f070015
-			public const int textSummary = 2131165205;
+			// aapt resource value: 0x7f070018
+			public const int textSummaryLeast = 2131165208;
 			
-			// aapt resource value: 0x7f070013
-			public const int textSummaryLeast = 2131165203;
-			
-			// aapt resource value: 0x7f070011
-			public const int textSummaryMost = 2131165201;
+			// aapt resource value: 0x7f070016
+			public const int textSummaryMost = 2131165206;
 			
 			// aapt resource value: 0x7f070000
 			public const int titleFeeling = 2131165184;
 			
-			// aapt resource value: 0x7f070012
-			public const int titleSummaryLeast = 2131165202;
+			// aapt resource value: 0x7f070017
+			public const int titleSummaryLeast = 2131165207;
 			
-			// aapt resource value: 0x7f070010
-			public const int titleSummaryMost = 2131165200;
+			// aapt resource value: 0x7f07000e
+			public const int titleSummaryMost = 2131165198;
 			
 			static Id()
 			{
@@ -171,7 +183,7 @@ namespace Productivity_Tracker
 			public const int MainOri = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int Raw_Data = 2130903042;
+			public const int Options = 2130903042;
 			
 			// aapt resource value: 0x7f030003
 			public const int Summary = 2130903043;

@@ -12,33 +12,29 @@ using SQLite;
 
 namespace Productivity_Tracker
 {
-    [Activity(Label = "Productivity_Tracker", MainLauncher = true)]
+    [Activity(Label = "Productivity Tracker", MainLauncher = true)]
     public class MainActivity : Activity
     {
         private static string dbName = "db.sqlite";
+        SQLiteConnection db;
 
 #if DEBUG
         public static string dbPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), dbName);
 #else
         public static string dbPath = Path.Combine(Android.OS.Environment.ExternalStorageDirectory.ToString(), dbName);
 #endif
-
-        Button b_Awesome, b_Good, b_Mediocre, b_Poor, b_Terrible;
-        Button b_Summary, b_RawData, b_Options;
-
-        TextView t_console;
-
-        Button b_Main;
-
+        //General
+        Button b_Summary, b_Main, b_Options;
+        //Summary
         TextView t_SummaryMost, t_SummaryLeast;
+        //Main
+        Button b_Awesome, b_Good, b_Mediocre, b_Poor, b_Terrible;
+        //Options
+        Button b_Clear, b_TimeMin, b_TimeMax;
+        TextView t_TimeMin, t_TimeMax;
 
-        Button b_BackRaw;
-
-        TextView t_RawData;
-
-        Button b_Clear;
-
-        SQLiteConnection db;
+        int hourMin = 8, hourMax = 12+10;
+        int minuteMin, minuteMax;
 
         protected override void OnCreate(Bundle bundle)
         {
@@ -50,12 +46,30 @@ namespace Productivity_Tracker
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
             LoadMain();
+            LoadFooter();
         }
 
         protected override void OnPause()
         {
             base.OnPause();
             CreateNotification();
+        }
+
+        void LoadFooter()
+        {
+            b_Summary = FindViewById<Button>(Resource.Id.buttonSummary);
+            b_Main = FindViewById<Button>(Resource.Id.buttonMain);
+            b_Options = FindViewById<Button>(Resource.Id.buttonOptions);
+
+            b_Summary.Click += SummaryClicked;
+            b_Main.Click += MainClicked;
+            b_Options.Click += OptionsClicked;
+        }
+
+        void LoadSummary()
+        {
+            t_SummaryMost = FindViewById<TextView>(Resource.Id.textSummaryMost);
+            t_SummaryLeast = FindViewById<TextView>(Resource.Id.textSummaryLeast);
         }
 
         void LoadMain()
@@ -66,19 +80,11 @@ namespace Productivity_Tracker
             b_Poor = FindViewById<Button>(Resource.Id.buttonPoor);
             b_Terrible = FindViewById<Button>(Resource.Id.buttonTerrible);
 
-            b_RawData = FindViewById<Button>(Resource.Id.buttonRawData);
-            b_Summary = FindViewById<Button>(Resource.Id.buttonSummary);
-
-            t_console = FindViewById<TextView>(Resource.Id.textFeeling);
-
             b_Awesome.Click += AwesomeClicked;
             b_Good.Click += GoodClicked;
             b_Mediocre.Click += MediocreClicked;
             b_Poor.Click += PoorClicked;
             b_Terrible.Click += TerribleClicked;
-
-            b_Summary.Click += SummaryClicked;
-            b_RawData.Click += RawDataClicked;
 
             var database = db.Table<ProductiveData>();
             foreach (var dataPoint in database)
@@ -90,6 +96,32 @@ namespace Productivity_Tracker
             }
         }
 
+        void LoadOptions()
+        {
+            //Min/max times
+            t_TimeMax = FindViewById<TextView>(Resource.Id.t_TimeMax);
+            t_TimeMin = FindViewById<TextView>(Resource.Id.t_TimeMin);
+            b_TimeMax = FindViewById<Button>(Resource.Id.b_TimeMax);
+            b_TimeMin = FindViewById<Button>(Resource.Id.b_TimeMin);
+
+            // Add a click listener to the button
+            b_TimeMin.Click += (o, e) => ShowDialog(0);
+            b_TimeMax.Click += (o, e) => ShowDialog(1);
+
+            //Set min/max times
+            hourMin = 8;
+            hourMax = 12 + 10;
+            minuteMin = 0;
+            minuteMax = 0;
+
+            //clear button
+            b_Clear = FindViewById<Button>(Resource.Id.b_Clear);
+
+            b_Clear.Click += ClearClicked;
+
+            UpdateTimes();
+        }
+
         void CreateNotification()
         {
             var alarmIntent = new Intent(this, typeof(AlarmReceiver));
@@ -97,36 +129,12 @@ namespace Productivity_Tracker
             var pending = PendingIntent.GetBroadcast(this, 0, alarmIntent, PendingIntentFlags.UpdateCurrent);
 
             var alarmManager = GetSystemService(AlarmService).JavaCast<AlarmManager>();
-            alarmManager.Set(AlarmType.ElapsedRealtime, SystemClock.ElapsedRealtime() + 60 * 2 * 1000, pending);//notify in one hour
-        }
-
-        void LoadSummary()
-        {
-            b_Main = FindViewById<Button>(Resource.Id.buttonMain);
-            b_RawData = FindViewById<Button>(Resource.Id.buttonRawData);
-            b_Options = FindViewById<Button>(Resource.Id.buttonOptions);
-            t_SummaryMost = FindViewById<TextView>(Resource.Id.textSummaryMost);
-            t_SummaryLeast = FindViewById<TextView>(Resource.Id.textSummaryLeast);
-
-            b_Main.Click += MainClicked;
-            b_RawData.Click += RawDataClicked;
-        }
-
-        void LoadRawData()
-        {
-            b_BackRaw = FindViewById<Button>(Resource.Id.buttonBackRaw);
-            t_RawData = FindViewById<TextView>(Resource.Id.textRawdata);
-            var database = db.Table<ProductiveData>();
-            string dbAllData = "";
-
-            foreach (var dataPoint in database)
+            long timeDifference = SystemClock.ElapsedRealtime() + 60 * 60 * 60 * 1000;//One hour
+            if (DateTime.Now.Hour + 1 > hourMax)
             {
-                dbAllData += "Date: "+dataPoint.DateMonth+"/"+dataPoint.DateDay+" Time: "+dataPoint.DateHour + " Productivity Level: " + dataPoint.ProdutivityLevel+"\n";
+                timeDifference = SystemClock.ElapsedRealtime() + (long)new DateTime(2010, 1, 2, hourMin, minuteMin, 0).Subtract(new DateTime(2010, 1, 1, hourMax, minuteMax, 0)).TotalMilliseconds;
             }
-
-            t_RawData.Text = dbAllData;
-
-            b_BackRaw.Click += MainClicked;
+            alarmManager.Set(AlarmType.ElapsedRealtime, timeDifference, pending);
         }
 
         void AwesomeClicked(object sender, EventArgs e)
@@ -176,10 +184,25 @@ namespace Productivity_Tracker
 
         // --------------------------------------------
 
+        void MainClicked(object sender, EventArgs e)
+        {
+            SetContentView(Resource.Layout.Main);
+            LoadMain();
+            LoadFooter();
+        }
+
+        void OptionsClicked(object sender, EventArgs e)
+        {
+            SetContentView(Resource.Layout.Options);
+            LoadOptions();
+            LoadFooter();
+        }
+
         void SummaryClicked(object sender, EventArgs e)
         {
             SetContentView(Resource.Layout.Summary);
             LoadSummary();
+            LoadFooter();
 
             Tuple<int, int>[] productivityHour = new Tuple<int, int>[24];
             int productiveDataPoints = 0, productivityLevelTotalHour = 0;
@@ -219,18 +242,6 @@ namespace Productivity_Tracker
             db.DeleteAll<ProductiveData>();
         }
 
-        void MainClicked(object sender, EventArgs e)
-        {
-            SetContentView(Resource.Layout.Main);
-            LoadMain();
-        }
-
-        void RawDataClicked(object sender, EventArgs e)
-        {
-            SetContentView(Resource.Layout.Raw_Data);
-            LoadRawData();
-        }
-
         float[] CalculateAverage(Tuple<int, int>[] prodHours)
         {
             float[] prodHoursAverage = new float[24];
@@ -264,6 +275,86 @@ namespace Productivity_Tracker
                 }
             }
             return bestProdTimes;
+        }
+
+        private void TimePickerCallbackMinimum(object sender, TimePickerDialog.TimeSetEventArgs e)
+        {
+            hourMin = e.HourOfDay;
+            minuteMin = e.Minute;
+            UpdateTimes();
+        }
+
+        private void TimePickerCallbackMaximum(object sender, TimePickerDialog.TimeSetEventArgs e)
+        {
+            hourMax = e.HourOfDay;
+            minuteMax = e.Minute;
+            UpdateTimes();
+        }
+
+        //Conert time from 24 hour clock to 12 hour clock
+        string ConvertTime(string openingStatement, int hour, int min)
+        {
+            bool isPM = false;
+
+            if (hour > 12)
+            {
+                isPM = true;
+                hour -= 12;
+            }
+            else if (hour == 0)
+            {
+                hour = 12;
+            }
+            else if (hour == 12)
+            {
+                isPM = true;
+            }
+            if (isPM)
+            {
+                return string.Format(openingStatement + "{0}:{1}PM", hour, min.ToString().PadLeft(2, '0'));
+            }
+            return string.Format(openingStatement + "{0}:{1}AM", hour, min.ToString().PadLeft(2, '0'));
+        }
+
+        void UpdateTimes()
+        {
+            DateTime dateTimeMin = new DateTime(2016, 1, 1, hourMin, minuteMin, 0);
+            DateTime dateTimeMax = new DateTime(2016, 1, 1, hourMax, minuteMax, 0);
+
+            if (dateTimeMax < dateTimeMin)
+            {
+                int tempHour = hourMin;
+                int tempMinute = minuteMin;
+
+                hourMin = hourMax;
+                minuteMin = minuteMax;
+                hourMax = tempHour;
+                minuteMax = tempMinute;
+            }
+
+            dateTimeMin = new DateTime(2016, 1, 1, hourMin, minuteMin, 0);
+            dateTimeMax = new DateTime(2016, 1, 1, hourMax, minuteMax, 0);
+
+            string timeMin = ConvertTime("Day start time: ", hourMin, minuteMin);
+            string timeMax = ConvertTime("Day end time: ", hourMax, minuteMax);
+            
+            t_TimeMin.Text = timeMin;
+            t_TimeMax.Text = timeMax;
+        }
+
+        const int minID = 0, maxID = 1;
+        protected override Dialog OnCreateDialog(int id)
+        {
+            if (id == minID)
+            {
+                return new TimePickerDialog(this, TimePickerCallbackMinimum, hourMin, minuteMin, false);
+            }
+            else if (id == maxID)
+            {
+                return new TimePickerDialog(this, TimePickerCallbackMaximum, hourMax, minuteMax, false);
+            }
+
+            return null;
         }
     }
 }

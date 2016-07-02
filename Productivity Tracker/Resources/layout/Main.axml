@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <TextView
-        android:text="How productive are you feeling?"
+        android:text="Rate Productivity"
         android:typeface="sans"
         android:textStyle="bold"
         android:textSize="20dp"
@@ -79,15 +79,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true">
             <Button
-                android:text="Raw Data"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.33"
-                android:typeface="sans"
-                android:textSize="18dp"
-                android:textAllCaps="true"
-                android:id="@+id/buttonRawData" />
-            <Button
                 android:text="Summary"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -96,6 +87,15 @@
                 android:textSize="18dp"
                 android:textAllCaps="true"
                 android:id="@+id/buttonSummary" />
+            <Button
+                android:text="Main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:typeface="sans"
+                android:textSize="18dp"
+                android:textAllCaps="true"
+                android:id="@+id/buttonMain" />
             <Button
                 android:text="Options"
                 android:layout_width="0dp"

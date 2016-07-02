@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout1">
+    <TextView
+        android:text="Notification Times"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/titleSummaryMost"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textAllCaps="true" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@android:color/white" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+        <TextView
+            android:id="@+id/t_TimeMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Day start time: 7:00AM" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/b_TimeMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="Change" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+        <TextView
+            android:id="@+id/t_TimeMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Day end time: 9:00 PM" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/b_TimeMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="Change" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@android:color/white" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+        <TextView
+            android:id="@+id/t_ClearData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Clear all data" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/b_Clear"
+            android:layout_width="87.0dp"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="Clear" />
+    </LinearLayout>
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/relativeLayout1"
+        android:layout_marginTop="0.0dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/linearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+            <Button
+                android:text="Summary"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:typeface="sans"
+                android:textSize="18dp"
+                android:textAllCaps="true"
+                android:id="@+id/buttonSummary" />
+            <Button
+                android:text="Main"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:typeface="sans"
+                android:textSize="18dp"
+                android:textAllCaps="true"
+                android:id="@+id/buttonMain" />
+            <Button
+                android:text="Options"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:typeface="sans"
+                android:textSize="18dp"
+                android:textAllCaps="true"
+                android:id="@+id/buttonOptions" />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

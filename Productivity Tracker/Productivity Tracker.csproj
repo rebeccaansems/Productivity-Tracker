@@ -65,14 +65,14 @@
     <AndroidResource Include="Resources\layout\SummaryOri.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\Raw_Data.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\Main.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\Summary.axml">
       <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\Options.axml">
+      <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
   <ItemGroup>
