@@ -33,7 +33,7 @@ namespace Productivity_Tracker
         Button b_Clear, b_TimeMin, b_TimeMax;
         TextView t_TimeMin, t_TimeMax;
 
-        int hourMin = 8, hourMax = 12+10;
+        int hourMin = 8, hourMax = 12 + 10;
         int minuteMin, minuteMax;
 
         protected override void OnCreate(Bundle bundle)
@@ -118,6 +118,12 @@ namespace Productivity_Tracker
             b_Clear = FindViewById<Button>(Resource.Id.b_Clear);
 
             b_Clear.Click += ClearClicked;
+
+            //if database is empty then don't allow clearance
+            if (db.Table<ProductiveData>().Count() == 0)
+            {
+                b_Clear.Enabled = false;
+            }
 
             UpdateTimes();
         }
@@ -208,40 +214,88 @@ namespace Productivity_Tracker
             int productiveDataPoints = 0, productivityLevelTotalHour = 0;
 
             var database = db.Table<ProductiveData>();
+            //fill 24 instance(hour) array with zero'd tuples 
             for (int i = 0; i < productivityHour.Length; i++)
             {
                 productivityHour[i] = new Tuple<int, int>(0, 0);//(number of data points, productivity level)
             }
 
+            int numberOfDataPoints = 0;
             foreach (var dataPoint in database)
             {
                 productiveDataPoints = productivityHour[dataPoint.DateHour].Item1 + 1;
                 productivityLevelTotalHour = productivityHour[dataPoint.DateHour].Item2 + dataPoint.ProdutivityLevel;
                 productivityHour[dataPoint.DateHour] = new Tuple<int, int>(productiveDataPoints, productivityLevelTotalHour);
+                numberOfDataPoints++;
             }
-            List<Tuple<int, float>> bestProductivityTimes = CalculateBestTimes(CalculateAverage(productivityHour));
 
-            string summaryMostText = "";
-            for (int i = 0; i < bestProductivityTimes.Count; i++)
+            if (numberOfDataPoints > 20)
             {
-                if (bestProductivityTimes[i].Item1 > 12)
-                {
-                    summaryMostText += bestProductivityTimes[i].Item1 - 12 + "pm \n";
-                }
-                else
-                {
-                    summaryMostText += bestProductivityTimes[i].Item1 + "am \n";
-                }
-            }
+                Tuple<List<Tuple<int, float>>, List<Tuple<int, float>>> bestWorstProd =
+                    CalculateBestWorstTimes(CalculateAverage(productivityHour));
 
-            t_SummaryMost.Text = summaryMostText;
+                List<Tuple<int, float>> bestProductivityTimes = bestWorstProd.Item1;
+                List<Tuple<int, float>> worstProductivityTimes = bestWorstProd.Item2;
+
+                string summaryMostText = "";
+                for (int i = 0; i < bestProductivityTimes.Count; i++)
+                {
+                    if (bestProductivityTimes[i].Item1 > 12)
+                    {
+                        summaryMostText += bestProductivityTimes[i].Item1 - 12 + "pm \n";
+                    }
+                    else if (bestProductivityTimes[i].Item1 == 0)
+                    {
+                        summaryMostText += 12 + "am \n";
+                    }
+                    else if (bestProductivityTimes[i].Item1 == 12)
+                    {
+                        summaryMostText += 12 + "pm \n";
+                    }
+                    else
+                    {
+                        summaryMostText += bestProductivityTimes[i].Item1 + "am \n";
+                    }
+                }
+
+                string summaryWorstText = "";
+                for (int i = 0; i < worstProductivityTimes.Count; i++)
+                {
+                    if (worstProductivityTimes[i].Item1 > 12)
+                    {
+                        summaryWorstText += worstProductivityTimes[i].Item1 - 12 + "pm \n";
+                    }
+                    else if (worstProductivityTimes[i].Item1 == 0)
+                    {
+                        summaryWorstText += 12 + "am \n";
+                    }
+                    else if (worstProductivityTimes[i].Item1 == 12)
+                    {
+                        summaryWorstText += 12 + "pm \n";
+                    }
+                    else
+                    {
+                        summaryWorstText += worstProductivityTimes[i].Item1 + "am \n";
+                    }
+                }
+                t_SummaryMost.Text = summaryMostText;
+                t_SummaryLeast.Text = summaryWorstText;
+            }
+            else
+            {
+                t_SummaryMost.Text = "To ensure accuracy, you have to have a minumum of 20 data points.";
+                t_SummaryLeast.Text = "Currently you have " + numberOfDataPoints + " data point/s.";
+            }
         }
 
+        //delete the database
         void ClearClicked(object sender, EventArgs e)
         {
             db.DeleteAll<ProductiveData>();
+            b_Clear.Enabled = false;
         }
 
+        //calculate the average of an array of tuples
         float[] CalculateAverage(Tuple<int, int>[] prodHours)
         {
             float[] prodHoursAverage = new float[24];
@@ -255,26 +309,42 @@ namespace Productivity_Tracker
             return prodHoursAverage;
         }
 
-        List<Tuple<int, float>> CalculateBestTimes(float[] prodHoursAverages)
+        //calculates the best and worst times for productivity based on averages
+        Tuple<List<Tuple<int, float>>, List<Tuple<int, float>>> CalculateBestWorstTimes(float[] prodHoursAverages)
         {
             float max = 0;
+            float min = 100;
+
             List<Tuple<int, float>> bestProdTimes = new List<Tuple<int, float>>();
+            List<Tuple<int, float>> worstProdTimes = new List<Tuple<int, float>>();
+
             for (int i = 0; i < prodHoursAverages.Length; i++)
             {
                 if (max < prodHoursAverages[i])
                 {
                     max = prodHoursAverages[i];
                 }
+
+                if (min > prodHoursAverages[i])
+                {
+                    min = prodHoursAverages[i];
+                }
             }
 
             for (int hour = 0; hour < prodHoursAverages.Length; hour++)
             {
-                if (prodHoursAverages[hour] >= max - 1)
+                if (prodHoursAverages[hour] >= max - 0.5f && prodHoursAverages[hour] != 0)
                 {
                     bestProdTimes.Add(new Tuple<int, float>(hour, prodHoursAverages[hour]));
                 }
+                else if (prodHoursAverages[hour] <= min + 0.5f && prodHoursAverages[hour] != 0)
+                {
+                    worstProdTimes.Add(new Tuple<int, float>(hour, prodHoursAverages[hour]));
+                }
             }
-            return bestProdTimes;
+            Tuple<List<Tuple<int, float>>, List<Tuple<int, float>>> bestWorstProdTimes =
+                new Tuple<List<Tuple<int, float>>, List<Tuple<int, float>>>(bestProdTimes, worstProdTimes);
+            return bestWorstProdTimes;
         }
 
         private void TimePickerCallbackMinimum(object sender, TimePickerDialog.TimeSetEventArgs e)
@@ -337,7 +407,7 @@ namespace Productivity_Tracker
 
             string timeMin = ConvertTime("Day start time: ", hourMin, minuteMin);
             string timeMax = ConvertTime("Day end time: ", hourMax, minuteMax);
-            
+
             t_TimeMin.Text = timeMin;
             t_TimeMax.Text = timeMax;
         }
