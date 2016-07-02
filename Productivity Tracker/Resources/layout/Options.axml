@@ -36,14 +36,14 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Day start time: 7:00AM" />
+            android:text="Notification start time: 12:00AM" />
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
         <Button
             android:id="@+id/b_TimeMin"
-            android:layout_width="wrap_content"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
             android:text="Change" />
@@ -59,14 +59,14 @@
             android:layout_height="wrap_content"
             android:paddingLeft="10dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Day end time: 9:00 PM" />
+            android:text="Notification end time: 12:00 PM" />
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
         <Button
             android:id="@+id/b_TimeMax"
-            android:layout_width="wrap_content"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
             android:text="Change" />
@@ -77,6 +77,48 @@
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
         android:background="@android:color/white" />
+    <TextView
+        android:text="Data"
+        android:typeface="sans"
+        android:textStyle="bold"
+        android:textSize="20dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/titleSummaryMost"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textAllCaps="true" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:background="@android:color/white" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout2">
+        <TextView
+            android:id="@+id/t_RemoveLastData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="10dp"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Remove last data point" />
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+        <Button
+            android:id="@+id/b_RemoveLastDataPoint"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:paddingRight="10dp"
+            android:text="Delete" />
+    </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -95,7 +137,7 @@
             android:layout_weight="1" />
         <Button
             android:id="@+id/b_Clear"
-            android:layout_width="87.0dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             android:paddingRight="10dp"
             android:text="Clear" />

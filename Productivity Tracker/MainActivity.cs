@@ -30,7 +30,7 @@ namespace Productivity_Tracker
         //Main
         Button b_Awesome, b_Good, b_Mediocre, b_Poor, b_Terrible;
         //Options
-        Button b_Clear, b_TimeMin, b_TimeMax;
+        Button b_TimeMin, b_TimeMax, b_Clear, b_RemoveLastPoint;
         TextView t_TimeMin, t_TimeMax;
 
         int hourMin = 8, hourMax = 12 + 10;
@@ -119,13 +119,16 @@ namespace Productivity_Tracker
 
             //clear button
             b_Clear = FindViewById<Button>(Resource.Id.b_Clear);
+            b_RemoveLastPoint = FindViewById<Button>(Resource.Id.b_RemoveLastDataPoint);
 
             b_Clear.Click += ClearClicked;
+            b_RemoveLastPoint.Click += RemoveLastPointClicked;
 
             //if database is empty then don't allow clearance
             if (db.Table<ProductiveData>().Count() == 0)
             {
                 b_Clear.Enabled = false;
+                b_RemoveLastPoint.Enabled = false;
             }
 
             UpdateTimes();
@@ -200,6 +203,13 @@ namespace Productivity_Tracker
         // ------------- View buttons (in footer) clicked
 
         void MainClicked(object sender, EventArgs e)
+        {
+            SetContentView(Resource.Layout.Main);
+            LoadMain();
+            LoadFooter();
+        }
+
+        void MainClicked()
         {
             SetContentView(Resource.Layout.Main);
             LoadMain();
@@ -305,6 +315,23 @@ namespace Productivity_Tracker
         {
             db.DeleteAll<ProductiveData>();
             b_Clear.Enabled = false;
+            MainClicked();
+        }
+
+        //delete last data point in database
+        void RemoveLastPointClicked(object sender, EventArgs e)
+        {
+            var database = db.Table<ProductiveData>();
+            var lastData = new ProductiveData();
+
+            //find last data point
+            foreach (var dataPoint in database)
+            {
+                lastData = dataPoint;
+            }
+
+            db.Delete<ProductiveData>(lastData.DataNum);
+            MainClicked();
         }
 
         //calculate the average of an array of tuples
@@ -420,8 +447,8 @@ namespace Productivity_Tracker
             dateTimeMin = new DateTime(2016, 1, 1, hourMin, minuteMin, 0);
             dateTimeMax = new DateTime(2016, 1, 1, hourMax, minuteMax, 0);
 
-            string timeMin = ConvertTime("Day start time: ", hourMin, minuteMin);
-            string timeMax = ConvertTime("Day end time: ", hourMax, minuteMax);
+            string timeMin = ConvertTime("Notification start time: ", hourMin, minuteMin);
+            string timeMax = ConvertTime("Notification end time: ", hourMax, minuteMax);
 
             t_TimeMin.Text = timeMin;
             t_TimeMax.Text = timeMax;

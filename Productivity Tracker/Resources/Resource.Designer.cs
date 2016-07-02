@@ -82,8 +82,11 @@ namespace Productivity_Tracker
 		public partial class Id
 		{
 			
+			// aapt resource value: 0x7f070017
+			public const int b_Clear = 2131165207;
+			
 			// aapt resource value: 0x7f070015
-			public const int b_Clear = 2131165205;
+			public const int b_RemoveLastDataPoint = 2131165205;
 			
 			// aapt resource value: 0x7f070013
 			public const int b_TimeMax = 2131165203;
@@ -94,8 +97,8 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f070001
 			public const int buttonAwesome = 2131165185;
 			
-			// aapt resource value: 0x7f07001a
-			public const int buttonBackSummary = 2131165210;
+			// aapt resource value: 0x7f07001c
+			public const int buttonBackSummary = 2131165212;
 			
 			// aapt resource value: 0x7f07000c
 			public const int buttonClear = 2131165196;
@@ -133,8 +136,11 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f070006
 			public const int relativeLayout1 = 2131165190;
 			
+			// aapt resource value: 0x7f070016
+			public const int t_ClearData = 2131165206;
+			
 			// aapt resource value: 0x7f070014
-			public const int t_ClearData = 2131165204;
+			public const int t_RemoveLastData = 2131165204;
 			
 			// aapt resource value: 0x7f070012
 			public const int t_TimeMax = 2131165202;
@@ -145,20 +151,20 @@ namespace Productivity_Tracker
 			// aapt resource value: 0x7f07000b
 			public const int textFeeling = 2131165195;
 			
-			// aapt resource value: 0x7f070019
-			public const int textSummary = 2131165209;
+			// aapt resource value: 0x7f07001b
+			public const int textSummary = 2131165211;
+			
+			// aapt resource value: 0x7f07001a
+			public const int textSummaryLeast = 2131165210;
 			
 			// aapt resource value: 0x7f070018
-			public const int textSummaryLeast = 2131165208;
-			
-			// aapt resource value: 0x7f070016
-			public const int textSummaryMost = 2131165206;
+			public const int textSummaryMost = 2131165208;
 			
 			// aapt resource value: 0x7f070000
 			public const int titleFeeling = 2131165184;
 			
-			// aapt resource value: 0x7f070017
-			public const int titleSummaryLeast = 2131165207;
+			// aapt resource value: 0x7f070019
+			public const int titleSummaryLeast = 2131165209;
 			
 			// aapt resource value: 0x7f07000e
 			public const int titleSummaryMost = 2131165198;
