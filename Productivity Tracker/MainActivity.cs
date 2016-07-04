@@ -364,7 +364,7 @@ namespace Productivity_Tracker
                     max = prodHoursAverages[i];
                 }
 
-                if (min > prodHoursAverages[i])
+                if (min > prodHoursAverages[i] && min != 0)
                 {
                     min = prodHoursAverages[i];
                 }
